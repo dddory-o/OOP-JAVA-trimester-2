@@ -46,10 +46,11 @@ class Exam {
 
     // Getter and Setter for title
     public String getTitle() {
-        return title;
+        return title+"exam";
     }
 
     public void setTitle(String title) {
+
         this.title = title;
     }
 
