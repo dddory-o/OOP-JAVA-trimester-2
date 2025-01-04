@@ -1,4 +1,6 @@
-// Candidate.java
+package assignment_1;
+
+// assignment_1.Candidate.java
 public class Candidate {
     private int candidateId;
     private String name;
@@ -40,6 +42,6 @@ public class Candidate {
 
     @Override
     public String toString() {
-        return "Candidate ID: " + candidateId + ", Name: " + name + ", Score: " + score;
+        return "assignment_1.Candidate ID: " + candidateId + ", Name: " + name + ", Score: " + score;
     }
 }

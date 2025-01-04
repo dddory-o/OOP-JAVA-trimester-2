@@ -1,4 +1,6 @@
-// Question.java
+package assignment_1;
+
+// assignment_1.Question.java
 public class Question {
     private int questionId;
     private String questionText;
@@ -36,6 +38,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question ID: " + questionId + ", Text: " + questionText + ", Correct Answer: " + correctAnswer;
+        return "assignment_1.Question ID: " + questionId + ", Text: " + questionText + ", Correct Answer: " + correctAnswer;
     }
 }

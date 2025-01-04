@@ -1,4 +1,6 @@
-// Main.java
+package assignment_1;
+
+// assignment_1.Main.java
 public class Main {
     public static void main(String[] args) {
         // Create questions
@@ -14,10 +16,10 @@ public class Main {
         exam.addQuestion(q2);
 
         // Output the exam, candidate, and questions
-        System.out.println("Exam Details:");
+        System.out.println("assignment_1.Exam Details:");
         System.out.println(exam);
 
-        System.out.println("\nCandidate Details:");
+        System.out.println("\nassignment_1.Candidate Details:");
         System.out.println(candidate);
 
         System.out.println("\nQuestions:");
@@ -35,7 +37,7 @@ public class Main {
         }
 
         // Output updated candidate score
-        System.out.println("\nUpdated Candidate Details:");
+        System.out.println("\nUpdated assignment_1.Candidate Details:");
         System.out.println(candidate);
     }
 }

@@ -1,4 +1,4 @@
-// Exam.java
+package assignment_1;// assignment_1.Exam.java
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class Exam {
 
     @Override
     public String toString() {
-        return "Exam ID: " + examId + ", Title: " + title + ", Questions: " + questions.size();
+        return "assignment_1.Exam ID: " + examId + ", Title: " + title + ", Questions: " + questions.size();
     }
 }
 
