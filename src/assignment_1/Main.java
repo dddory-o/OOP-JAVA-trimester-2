@@ -1,49 +1,36 @@
 package assignment_1;
 
-// assignment_1.Main.java
+import java.sql.SQLException;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        // Create questions
-        Question q1 = new Question(1, "What is 2 + 2?", "4");
-        Question q2 = new Question(2, "What is the capital of France?", "Paris");
+        var examService = new ExamService();
+        System.out.println("ALL EXAMS WE HAVE: ");
 
-        // Create a candidate
-        Candidate candidate = new Candidate(101, "Alice");
-
-        // Create an exam and add questions
-        Exam exam = new Exam(201, "General Knowledge Test");
-        exam.addQuestion(q1);
-        exam.addQuestion(q2);
-
-        // Output the exam, candidate, and questions
-        System.out.println("assignment_1.Exam Details:");
-        System.out.println(exam);
-
-        System.out.println("\nassignment_1.Candidate Details:");
-        System.out.println(candidate);
-
-        System.out.println("\nQuestions:");
-        for (Question q : exam.getQuestions()) {
-            System.out.println(q);
+        for (Exam e : examService.getExams()) {
+            System.out.println(e.getTitle() + " " + e.getId());
         }
 
-        // Simulate candidate answering questions
-        System.out.println("\nAnswering Questions:");
-        if ("4".equals(q1.getCorrectAnswer())) {
-            candidate.updateScore(10);
-        }
-        if ("Paris".equals(q2.getCorrectAnswer())) {
-            candidate.updateScore(10);
+        System.out.println("SO IF WE LOOK QUESTIONS: ");
+
+        for (Exam exam : examService.getExams()) {
+            var questions = examService.getQuestions(exam.getId());
+            System.out.println("EXAM NUMBER: " + exam.getId() + " HAVE THIS QUESTIONS");
+
+            for (Question q : questions) {
+                System.out.println(q.getId()+") "+q.getQuestionText());
+                System.out.println("ENTER YOUR ANSWER: ");
+                Scanner scanner = new Scanner(System.in);
+                String userAnswer = scanner.nextLine();
+                if (userAnswer.equals(q.getCorrectAnswer())) {
+                    System.out.println("CORRECT ANSWER");
+                } else {
+                    System.out.println("WRONG ANSWER CORRECT ANSWER IS: " + q.getCorrectAnswer());
+                }
+            }
         }
 
-        // Output updated candidate score
-        System.out.println("\nUpdated assignment_1.Candidate Details:");
-        System.out.println(candidate);
+        System.out.println("THANK YOU FOR YOUR TIME");
     }
 }
-
-
-
-
-
-
