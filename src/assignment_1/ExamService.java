@@ -1,90 +1,70 @@
 package assignment_1;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExamService {
-    public List<Exam> getExams() {
-        DBConnection con = new DBConnection();
-        try (Connection c = con.dbConnect()){
 
-            String query = "SELECT id, title FROM exam";
+    public void addCandidate(String name, int age) {
+        try (Connection c = new DBConnection().dbConnect()) {
+            String query = "INSERT INTO candidates (name, age) VALUES (?, ?)";
             PreparedStatement statement = c.prepareStatement(query);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            var exams = new ArrayList<Exam>();
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                exams.add(new Exam(id, title));
-            }
-
-            return exams;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<Question> getQuestions(int examId) {
-        try {
-            DBConnection con = new DBConnection();
-            Connection c = con.dbConnect();
-
-            String query = "SELECT id, question_text, question_answer FROM question WHERE exam_id = ?";
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setInt(1, examId);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            List<Question> questions = new ArrayList<Question>();
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String questionText = resultSet.getString("question_text");
-                String correctAnswer = resultSet.getString("question_answer");
-                questions.add(new Question(id, questionText, correctAnswer));
-            }
-            return questions;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void addExam(Exam exam) {
-        try {
-            DBConnection con = new DBConnection();
-            Connection c = con.dbConnect();
-
-            String query = "INSERT INTO exam (title) VALUES (?)";
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, exam.getTitle());
-
+            statement.setString(1, name);
+            statement.setInt(2, age);
             statement.executeUpdate();
+            System.out.println("Candidate added successfully!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addQuestion(Question question, int examId) {
-        try {
-            DBConnection con = new DBConnection();
-            Connection c = con.dbConnect();
-
-            String query = "INSERT INTO question (question_text, correct_answer, exam_id) VALUES (?, ?, ?)";
+    public void updateCandidate(int id, String name, int age) {
+        try (Connection c = new DBConnection().dbConnect()) {
+            String query = "UPDATE candidates SET name = ?, age = ? WHERE id = ?";
             PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, question.getQuestionText());
-            statement.setString(2, question.getCorrectAnswer());
-            statement.setInt(3, examId);
-
-            statement.executeUpdate();
+            statement.setString(1, name);
+            statement.setInt(2, age);
+            statement.setInt(3, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Candidate updated successfully!");
+            } else {
+                System.out.println("Candidate not found.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void deleteCandidate(int id) {
+        try (Connection c = new DBConnection().dbConnect()) {
+            String query = "DELETE FROM candidates WHERE id = ?";
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, id);
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Candidate deleted successfully!");
+            } else {
+                System.out.println("Candidate not found.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getCandidates() {
+        List<String> candidates = new ArrayList<>();
+        try (Connection c = new DBConnection().dbConnect()) {
+            String query = "SELECT id, name, age FROM candidates";
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                candidates.add(resultSet.getInt("id") + ") " + resultSet.getString("name") + " - " + resultSet.getInt("age") + " years old");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return candidates;
     }
 }
