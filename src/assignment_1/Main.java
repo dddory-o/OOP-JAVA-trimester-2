@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ExamService examService = new ExamService();
+        CandidateService candidateService = new CandidateService(new CandidateRepository());
 
         while (true) {
             System.out.println("\nMENU:");
@@ -17,42 +17,30 @@ public class Main {
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
-                case 1 -> {
-                    System.out.println("\nCANDIDATES:");
-                    for (String candidate : examService.getCandidates()) {
-                        System.out.println(candidate);
-                    }
-                }
+                case 1 -> candidateService.getCandidates().forEach(System.out::println);
                 case 2 -> {
                     System.out.print("Enter candidate name: ");
                     String name = scanner.nextLine();
-                    System.out.print("Enter candidate age: ");
-                    int age = scanner.nextInt();
-                    examService.addCandidate(name, age);
+                    candidateService.addCandidate(name);
                 }
                 case 3 -> {
-                    System.out.print("Enter candidate ID to update: ");
+                    System.out.print("Enter candidate ID: ");
                     int id = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
                     System.out.print("Enter new name: ");
-                    String newName = scanner.nextLine();
-                    System.out.print("Enter new age: ");
-                    int newAge = scanner.nextInt();
-                    examService.updateCandidate(id, newName, newAge);
+                    String name = scanner.nextLine();
+                    candidateService.updateCandidate(id, name, 0);
                 }
                 case 4 -> {
                     System.out.print("Enter candidate ID to delete: ");
                     int id = scanner.nextInt();
-                    examService.deleteCandidate(id);
+                    candidateService.deleteCandidate(id);
                 }
-                case 5 -> {
-                    System.out.println("Exiting... Thank you!");
-                    return;
-                }
-                default -> System.out.println("Invalid choice. Please try again.");
+                case 5 -> System.exit(0);
+                default -> System.out.println("Invalid choice.");
             }
         }
     }

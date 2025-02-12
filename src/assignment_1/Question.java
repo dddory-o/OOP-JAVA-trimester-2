@@ -29,4 +29,3 @@ public class Question extends Entity {
         return super.toString() + ", Text: " + questionText;
     }
 }
-

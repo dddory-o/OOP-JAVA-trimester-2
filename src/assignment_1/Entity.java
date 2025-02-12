@@ -34,4 +34,3 @@ public abstract class Entity {
         return "Entity ID: " + id;
     }
 }
-

@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExamService {
-
     public void addCandidate(String name, int age) {
-        try (Connection c = new DBConnection().dbConnect()) {
+        try (Connection c = DBConnection.getInstance().dbConnect()) {  // FIXED LINE
             String query = "INSERT INTO candidates (name, age) VALUES (?, ?)";
             PreparedStatement statement = c.prepareStatement(query);
             statement.setString(1, name);
@@ -20,7 +19,7 @@ public class ExamService {
     }
 
     public void updateCandidate(int id, String name, int age) {
-        try (Connection c = new DBConnection().dbConnect()) {
+        try (Connection c = DBConnection.getInstance().dbConnect()) {  // FIXED LINE
             String query = "UPDATE candidates SET name = ?, age = ? WHERE id = ?";
             PreparedStatement statement = c.prepareStatement(query);
             statement.setString(1, name);
@@ -37,25 +36,27 @@ public class ExamService {
         }
     }
 
-    public void deleteCandidate(int id) {
-        try (Connection c = new DBConnection().dbConnect()) {
-            String query = "DELETE FROM candidates WHERE id = ?";
-            PreparedStatement statement = c.prepareStatement(query);
+    public void delete(int id) {
+        try (Connection c = DBConnection.getInstance().dbConnect();
+             PreparedStatement statement = c.prepareStatement("DELETE FROM candidates WHERE id = ?")) {
+
             statement.setInt(1, id);
             int rowsDeleted = statement.executeUpdate();
+
             if (rowsDeleted > 0) {
                 System.out.println("Candidate deleted successfully!");
             } else {
                 System.out.println("Candidate not found.");
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        } catch (Exception e) {  // ✅ Catching Exception instead of SQLException
+            throw new RuntimeException("Error deleting candidate", e);
         }
     }
 
     public List<String> getCandidates() {
         List<String> candidates = new ArrayList<>();
-        try (Connection c = new DBConnection().dbConnect()) {
+        try (Connection c = DBConnection.getInstance().dbConnect()) {  // FIXED LINE
             String query = "SELECT id, name, age FROM candidates";
             PreparedStatement statement = c.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();

@@ -59,5 +59,3 @@ public class Exam extends Entity {
         return super.toString() + ", Title: " + title + ", Questions: " + questions.size();
     }
 }
-
-

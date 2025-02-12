@@ -4,7 +4,7 @@ public class Candidate extends Entity {
     private String name;
     private int score;
 
-    public Candidate(int id, String name) {
+    public Candidate(int id, String name, int score) {
         super(id);
         this.name = name;
         this.score = 0; // Default score
